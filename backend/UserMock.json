@@ -189,7 +189,7 @@
       "employeID": 10014,
       "location": "Patna",
       "email": "nikhil.agarwal@company.com",
-      "dob": "1980-12-05",
+      "dob": "1980-12-05",  
       "phone": "9001122334",
       "language": ["Hindi", "English"],
       "skill": ["Risk Assessment", "Statistical Modeling", "Financial Forecasting"]
