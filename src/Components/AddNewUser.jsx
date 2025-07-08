@@ -59,7 +59,7 @@ function AddNewUser() {
                     name="fullName"
                     value={newUser.fullName}
                     onChange={handleChange}
-                    placeholder="Vikram Patel"
+                    placeholder="Sumit Saxena"
                   />
                 </Form.Group>
               </Col>
@@ -72,7 +72,7 @@ function AddNewUser() {
                     name="position"
                     value={newUser.position}
                     onChange={handleChange}
-                    placeholder="Cost Accountant"
+                    placeholder="FrontEnd Developer"
                   />
                 </Form.Group>
               </Col>
@@ -85,7 +85,7 @@ function AddNewUser() {
                     name="department"
                     value={newUser.department}
                     onChange={handleChange}
-                    placeholder="Product Management"
+                    placeholder="IT"
                   />
                 </Form.Group>
               </Col>
@@ -111,7 +111,7 @@ function AddNewUser() {
                     name="location"
                     value={newUser.location}
                     onChange={handleChange}
-                    placeholder="Chennai"
+                    placeholder="Noida"
                   />
                 </Form.Group>
               </Col>
@@ -124,7 +124,7 @@ function AddNewUser() {
                     name="email"
                     value={newUser.email}
                     onChange={handleChange}
-                    placeholder="vikram.patel@company.com"
+                    placeholder="sumitsaxena942@gmail.com"
                   />
                 </Form.Group>
               </Col>
@@ -149,7 +149,7 @@ function AddNewUser() {
                     name="phone"
                     value={newUser.phone}
                     onChange={handleChange}
-                    placeholder="7890345678"
+                    placeholder="9369108596"
                   />
                 </Form.Group>
               </Col>
@@ -162,20 +162,20 @@ function AddNewUser() {
                     name="language"
                     value={newUser.language}
                     onChange={handleChange}
-                    placeholder="Tamil, English"
+                    placeholder="Hindi, English"
                   />
                 </Form.Group>
               </Col>
 
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Skills (comma-separated)</Form.Label>
+                  <Form.Label>Skills</Form.Label>
                   <Form.Control
                     type="text"
                     name="skill"
                     value={newUser.skill}
                     onChange={handleChange}
-                    placeholder="Cost Analysis, Inventory Valuation"
+                    placeholder="Developer"
                   />
                 </Form.Group>
               </Col>
