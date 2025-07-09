@@ -18,17 +18,61 @@ function AddNewUser() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewUser(prev => ({ ...prev, [name]: value }));
+    setNewUser(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
-
-  const handleSubmit = () => {
-    console.log('New User Created:', {
+  
+  const handleSubmit = async () => {
+    for (let key in newUser) {
+      if (!newUser[key].trim()) {
+        alert(`Please enter ${key}`);
+        return;
+      }
+    }
+  
+    const userToSend = {
       ...newUser,
-      language: newUser.language.split(','),
-      skill: newUser.skill.split(',')
-    });
-    setModalShow(false);
+      language: newUser.language.split(',').map(l => l.trim()),
+      skill: newUser.skill.split(',').map(s => s.trim())
+    };
+  
+    try {
+      const res = await fetch("http://localhost:5000/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userToSend)
+      });
+  
+      if (!res.ok) throw new Error("Failed to submit");
+  
+      const data = await res.json();
+      console.log("✅ User saved:", data);
+        setNewUser({
+        fullName: '',
+        position: '',
+        department: '',
+        employeID: '',
+        location: '',
+        email: '',
+        dob: '',
+        phone: '',
+        language: '',
+        skill: ''
+      });
+        setModalShow(false);
+  
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Form submission failed");
+    }
   };
+  
+    
+  
 
   return (
     <>
@@ -59,7 +103,7 @@ function AddNewUser() {
                     name="fullName"
                     value={newUser.fullName}
                     onChange={handleChange}
-                    placeholder="Sumit Saxena"
+                    placeholder="XYZ"
                   />
                 </Form.Group>
               </Col>
@@ -72,7 +116,7 @@ function AddNewUser() {
                     name="position"
                     value={newUser.position}
                     onChange={handleChange}
-                    placeholder="FrontEnd Developer"
+                    placeholder="Developer"
                   />
                 </Form.Group>
               </Col>
@@ -85,7 +129,7 @@ function AddNewUser() {
                     name="department"
                     value={newUser.department}
                     onChange={handleChange}
-                    placeholder="IT"
+                    placeholder="Medical"
                   />
                 </Form.Group>
               </Col>
@@ -98,7 +142,7 @@ function AddNewUser() {
                     name="employeID"
                     value={newUser.employeID}
                     onChange={handleChange}
-                    placeholder="10099"
+                    placeholder="0000"
                   />
                 </Form.Group>
               </Col>
@@ -124,7 +168,7 @@ function AddNewUser() {
                     name="email"
                     value={newUser.email}
                     onChange={handleChange}
-                    placeholder="sumitsaxena942@gmail.com"
+                    placeholder="yourname@gmail.com"
                   />
                 </Form.Group>
               </Col>
@@ -149,7 +193,7 @@ function AddNewUser() {
                     name="phone"
                     value={newUser.phone}
                     onChange={handleChange}
-                    placeholder="9369108596"
+                    placeholder="87985XXXXX"
                   />
                 </Form.Group>
               </Col>
@@ -175,7 +219,7 @@ function AddNewUser() {
                     name="skill"
                     value={newUser.skill}
                     onChange={handleChange}
-                    placeholder="Developer"
+                    placeholder="Expert Excel"
                   />
                 </Form.Group>
               </Col>

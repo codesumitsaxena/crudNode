@@ -3,27 +3,36 @@ import Table from 'react-bootstrap/Table';
 import Pagination from 'react-bootstrap/Pagination';
 import edit from '../assets/edit.png';
 import Delete from '../assets/bin.png';
+import EditTable from './EditTable';
 
 function UserTable() {
-  const [user, setUser] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 12;
 
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/users');
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      console.error("Failed to fetch users:", err);
+    }
+  };
+
   useEffect(() => {
-    fetch('http://localhost:3000/api/users')
-      .then(res => res.json())
-      .then(data => setUser(data));
+    fetchUsers();
   }, []);
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = user.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(users.length / usersPerPage);
 
-  const totalPages = Math.ceil(user.length / usersPerPage);
-
-  let items = [];
+  const paginationItems = [];
   for (let number = 1; number <= totalPages; number++) {
-    items.push(
+    paginationItems.push(
       <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
         {number}
       </Pagination.Item>
@@ -32,7 +41,7 @@ function UserTable() {
 
   return (
     <div className="container-fluid">
-      <div className='row'>
+      <div className="row">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -47,7 +56,7 @@ function UserTable() {
           </thead>
           <tbody>
             {currentUsers.map((item, index) => (
-              <tr key={item.id}>
+              <tr key={item._id}>
                 <td>{indexOfFirstUser + index + 1}</td>
                 <td>{item.fullName}</td>
                 <td>{item.position}</td>
@@ -56,8 +65,19 @@ function UserTable() {
                 <td>{item.location}</td>
                 <td>
                   <div className="btn-are d-flex gap-3">
-                    <img src={edit} alt="edit" className="img-fluid" style={{ height: "23px", cursor: "pointer" }} />
-                    <img src={Delete} alt="delete" className="img-fluid" style={{ height: "23px", cursor: "pointer" }} />
+                    <img
+                      src={edit}
+                      alt="edit"
+                      className="img-fluid"
+                      style={{ height: "23px", cursor: "pointer" }}
+                      onClick={() => setSelectedUser(item)}
+                    />
+                    <img
+                      src={Delete}
+                      alt="delete"
+                      className="img-fluid"
+                      style={{ height: "23px", cursor: "pointer" }}
+                    />
                   </div>
                 </td>
               </tr>
@@ -66,9 +86,20 @@ function UserTable() {
         </Table>
 
         <div className="d-flex justify-content-center flex-column align-items-center gap-2">
-          <Pagination>{items}</Pagination>
+          <Pagination>{paginationItems}</Pagination>
         </div>
       </div>
+
+      {selectedUser && (
+        <EditTable
+          userData={selectedUser}
+          onUpdated={() => {
+            fetchUsers();
+            setSelectedUser(null); 
+                    }}
+          onHide={() => setSelectedUser(null)}
+        />
+      )}
     </div>
   );
 }
